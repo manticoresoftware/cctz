@@ -20,10 +20,30 @@
 #include <ostream>
 #include <type_traits>
 
+#ifndef FORCE_INLINE
+	#ifndef NDEBUG
+		#define FORCE_INLINE inline
+	#else
+		#ifdef _MSC_VER
+			#define FORCE_INLINE __forceinline
+		#else
+			#if defined (__cplusplus) || defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L   /* C99 */
+				#ifdef __GNUC__
+					#define FORCE_INLINE inline __attribute__((always_inline))
+				#else
+					#define FORCE_INLINE inline
+				#endif
+			#else
+				#define FORCE_INLINE
+			#endif
+		#endif
+	#endif
+#endif
+
 // Disable constexpr support unless we are in C++14 mode.
 #if __cpp_constexpr >= 201304 || (defined(_MSC_VER) && _MSC_VER >= 1910)
 #define CONSTEXPR_D constexpr  // data
-#define CONSTEXPR_F constexpr  // function
+#define CONSTEXPR_F FORCE_INLINE constexpr  // function
 #define CONSTEXPR_M constexpr  // member
 #else
 #define CONSTEXPR_D const

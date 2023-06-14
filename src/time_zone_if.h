@@ -55,11 +55,11 @@ class TimeZoneIf {
 // Unix epoch.  We assume that the std::chrono::system_clock and the
 // Unix clock are second aligned, and that the results are representable.
 // (That is, that they share an epoch, which is required since C++20.)
-inline std::int_fast64_t ToUnixSeconds(const time_point<seconds>& tp) {
+FORCE_INLINE std::int_fast64_t ToUnixSeconds(const time_point<seconds>& tp) {
   return (tp - std::chrono::time_point_cast<seconds>(
                    std::chrono::system_clock::from_time_t(0))).count();
 }
-inline time_point<seconds> FromUnixSeconds(std::int_fast64_t t) {
+FORCE_INLINE time_point<seconds> FromUnixSeconds(std::int_fast64_t t) {
   return std::chrono::time_point_cast<seconds>(
              std::chrono::system_clock::from_time_t(0)) + seconds(t);
 }

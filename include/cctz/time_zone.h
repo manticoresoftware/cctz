@@ -380,7 +380,7 @@ namespace detail {
 // cctz::format(fmt, tp, tz) with a time_point that is outside the range
 // of a 64-bit std::time_t.
 template <typename D>
-std::pair<time_point<seconds>, D> split_seconds(const time_point<D>& tp) {
+FORCE_INLINE std::pair<time_point<seconds>, D> split_seconds(const time_point<D>& tp) {
   auto sec = std::chrono::time_point_cast<seconds>(tp);
   auto sub = tp - sec;
   if (sub.count() < 0) {

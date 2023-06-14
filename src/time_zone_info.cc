@@ -830,7 +830,7 @@ bool TimeZoneInfo::Load(const std::string& name) {
 }
 
 // BreakTime() translation for a particular transition type.
-time_zone::absolute_lookup TimeZoneInfo::LocalTime(
+FORCE_INLINE time_zone::absolute_lookup TimeZoneInfo::LocalTime(
     std::int_fast64_t unix_time, const TransitionType& tt) const {
   // A civil time in "+offset" looks like (time+offset) in UTC.
   // Note: We perform two additions in the civil_second domain to
@@ -840,7 +840,7 @@ time_zone::absolute_lookup TimeZoneInfo::LocalTime(
 }
 
 // BreakTime() translation for a particular transition.
-time_zone::absolute_lookup TimeZoneInfo::LocalTime(
+FORCE_INLINE time_zone::absolute_lookup TimeZoneInfo::LocalTime(
     std::int_fast64_t unix_time, const Transition& tr) const {
   const TransitionType& tt = transition_types_[tr.type_index];
   // Note: (unix_time - tr.unix_time) will never overflow as we
