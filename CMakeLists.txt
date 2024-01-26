@@ -14,12 +14,12 @@ set(CMAKE_MODULE_PATH
 include(CTest)
 include(FeatureSummary)
 
-option(BUILD_TOOLS "Whether or not to build tools" ON)
-option(BUILD_EXAMPLES "Whether or not to build examples" ON)
-option(BUILD_BENCHMARK "Whether or not to build the benchmark application (has no effect if BUILD_TESTING is disabled)" ON)
+option(CCTZ_BUILD_TOOLS "Whether or not to build tools" ON)
+option(CCTZ_BUILD_EXAMPLES "Whether or not to build examples" ON)
+option(CCTZ_BUILD_BENCHMARK "Whether or not to build the benchmark application (has no effect if BUILD_TESTING is disabled)" ON)
 
-if (BUILD_TESTING)
-  if (BUILD_BENCHMARK)
+if (CCTZ_BUILD_TESTING)
+  if (CCTZ_BUILD_BENCHMARK)
     find_package(benchmark)
     set_package_properties(benchmark PROPERTIES
       TYPE REQUIRED
@@ -108,17 +108,17 @@ if(APPLE)
 endif()
 add_library(cctz::cctz ALIAS cctz)
 
-if (BUILD_TOOLS)
+if (CCTZ_BUILD_TOOLS)
   add_executable(time_tool src/time_tool.cc)
   cctz_target_set_cxx_standard(time_tool)
   target_link_libraries(time_tool cctz::cctz)
 endif()
 
-if (BUILD_EXAMPLES)
+if (CCTZ_BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
-if (BUILD_TESTING)
+if (CCTZ_BUILD_TESTING)
   add_executable(civil_time_test src/civil_time_test.cc)
   cctz_target_set_cxx_standard(civil_time_test)
   target_include_directories(civil_time_test PRIVATE ${GTEST_INCLUDE_DIRS})
@@ -158,7 +158,7 @@ if (BUILD_TESTING)
       ENVIRONMENT "TZDIR=${CMAKE_CURRENT_SOURCE_DIR}/testdata/zoneinfo"
     )
 
-  if (BUILD_BENCHMARK)
+  if (CCTZ_BUILD_BENCHMARK)
     add_executable(cctz_benchmark src/cctz_benchmark.cc)
     cctz_target_set_cxx_standard(cctz_benchmark)
     target_link_libraries(cctz_benchmark cctz::cctz benchmark::benchmark_main)
@@ -174,7 +174,7 @@ install(TARGETS cctz
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   )
-if (BUILD_TOOLS)
+if (CCTZ_BUILD_TOOLS)
   install(TARGETS time_tool
     EXPORT ${PROJECT_NAME}-targets
     DESTINATION ${CMAKE_INSTALL_BINDIR}
