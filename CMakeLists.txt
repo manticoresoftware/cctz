@@ -65,10 +65,6 @@ function(cctz_target_set_cxx_standard target)
   endif()
 endfunction()
 
-if(APPLE)
-  find_library(CoreFoundation CoreFoundation)
-endif()
-
 set(CCTZ_HDRS
   include/cctz/time_zone.h
   include/cctz/civil_time_detail.h
