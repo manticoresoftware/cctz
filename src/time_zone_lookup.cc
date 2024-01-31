@@ -21,11 +21,6 @@
 #endif
 #endif
 
-#if defined(__APPLE__)
-#include <CoreFoundation/CFTimeZone.h>
-#include <vector>
-#endif
-
 #if defined(__Fuchsia__)
 #include <fuchsia/intl/cpp/fidl.h>
 #include <lib/async-loop/cpp/loop.h>
@@ -220,20 +215,6 @@ time_zone local_time_zone() {
   if (__system_property_get("persist.sys.timezone", sysprop) > 0) {
     zone = sysprop;
   }
-#endif
-#if defined(__APPLE__)
-  std::vector<char> buffer;
-  CFTimeZoneRef tz_default = CFTimeZoneCopyDefault();
-  if (CFStringRef tz_name = CFTimeZoneGetName(tz_default)) {
-    CFStringEncoding encoding = kCFStringEncodingUTF8;
-    CFIndex length = CFStringGetLength(tz_name);
-    CFIndex max_size = CFStringGetMaximumSizeForEncoding(length, encoding) + 1;
-    buffer.resize(static_cast<size_t>(max_size));
-    if (CFStringGetCString(tz_name, &buffer[0], max_size, encoding)) {
-      zone = &buffer[0];
-    }
-  }
-  CFRelease(tz_default);
 #endif
 #if defined(__Fuchsia__)
   std::string primary_tz;
