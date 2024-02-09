@@ -99,9 +99,6 @@ target_include_directories(cctz PUBLIC
 set_target_properties(cctz PROPERTIES
   PUBLIC_HEADER "${CCTZ_HDRS}"
   )
-if(APPLE)
-  target_link_libraries(cctz PUBLIC ${CoreFoundation})
-endif()
 add_library(cctz::cctz ALIAS cctz)
 
 if (CCTZ_BUILD_TOOLS)
