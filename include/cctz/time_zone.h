@@ -264,6 +264,8 @@ std::string format(const std::string&, const time_point<seconds>&,
                    const femtoseconds&, const time_zone&);
 bool parse(const std::string&, const std::string&, const time_zone&,
            time_point<seconds>*, femtoseconds*, std::string* err = nullptr);
+bool parse(const char*, const char*, const time_zone&,
+           time_point<seconds>*, femtoseconds*, std::string* err = nullptr);
 template <typename Rep, std::intmax_t Denom>
 bool join_seconds(
     const time_point<seconds>& sec, const femtoseconds& fs,
@@ -365,6 +367,12 @@ inline std::string format(const std::string& fmt, const time_point<D>& tp,
 //   }
 template <typename D>
 inline bool parse(const std::string& fmt, const std::string& input,
+                  const time_zone& tz, time_point<D>* tpp) {
+    return parse(fmt.c_str(), input.c_str(), tz, tpp);
+}
+
+template <typename D>
+inline bool parse(const char * fmt, const char * input,
                   const time_zone& tz, time_point<D>* tpp) {
   time_point<seconds> sec;
   detail::femtoseconds fs;

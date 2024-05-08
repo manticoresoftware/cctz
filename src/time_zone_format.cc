@@ -684,11 +684,11 @@ bool FromWeek(int week_num, weekday week_start, year_t* year, std::tm* tm) {
 //
 // We also handle the %z specifier to accommodate platforms that do not
 // support the tm_gmtoff extension to std::tm.  %Z is parsed but ignored.
-bool parse(const std::string& format, const std::string& input,
+bool parse(const char * format, const char * input,
            const time_zone& tz, time_point<seconds>* sec,
            detail::femtoseconds* fs, std::string* err) {
   // The unparsed input.
-  const char* data = input.c_str();  // NUL terminated
+  const char* data = input;  // NUL terminated
 
   // Skips leading whitespace.
   while (std::isspace(*data)) ++data;
@@ -714,7 +714,7 @@ bool parse(const std::string& format, const std::string& input,
   int offset = 0;  // No offset from passed tz.
   std::string zone = "UTC";
 
-  const char* fmt = format.c_str();  // NUL terminated
+  const char* fmt = format;  // NUL terminated
   bool twelve_hour = false;
   bool afternoon = false;
   int week_num = -1;
@@ -1016,6 +1016,12 @@ bool parse(const std::string& format, const std::string& input,
   *sec = tp;
   *fs = subseconds;
   return true;
+}
+
+bool parse(const std::string& format, const std::string& input,
+           const time_zone& tz, time_point<seconds>* sec,
+           detail::femtoseconds* fs, std::string* err) {
+    return parse(format.c_str(), input.c_str(), tz, sec, fs, err);
 }
 
 }  // namespace detail
